@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ເຂົາຂໍໂທດ ນ້ຳຫວານຄົນງາມ 💘</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Kanit', sans-serif;
+      background-image: linear-gradient(to bottom, #ffe0ec, #fff5fa);
+      text-align: center;
+      overflow: hidden;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #ff4081;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 12px;
+      margin: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .yes {
+      background-color: #ff66a3;
+      color: white;
+    }
+
+    .no {
+      background-color: #aaa;
+      color: white;
+      position: absolute;
+    }
+
+    .music-toggle {
+      background-color: #ffcce0;
+      color: #880044;
+    }
+
+    #result {
+      font-size: 1.4em;
+      color: #d5006e;
+      margin-top: 20px;
+    }
+
+    #gif {
+      width: 180px;
+      display: none;
+      margin-top: 20px;
+    }
+
+    #cartoon {
+      width: 150px;
+      margin-top: 15px;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 4s linear infinite;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { bottom: -30px; opacity: 1; }
+      100% { bottom: 100%; opacity: 0; }
+    }
+
+    .message-box {
+      margin-top: 25px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+    }
+
+    .reply-area {
+      margin-top: 30px;
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 400px;
+      height: 80px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1em;
+      resize: none;
+    }
+
+    #replyText {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #800040;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2em; }
+      button { font-size: 0.9em; padding: 10px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>ຂໍໂທດນ່າ 💖</h1>
+  <img id="cartoon" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmM5cDloNGdwbHd1aTZpZTVyazN5emZncHh4a3U0bWY5cmR5MXV5cCZlcD12MV8zNzE5MTk3NTk4NjcwNTViJmN0PWc/v6aOjy0Qo1fIA/giphy.gif" alt="sad cartoon"/>
+
+  <p>ເຂົາຂໍໂທດນ່າ ນ້ຳຫວານທີ່ຮັກຄົນງາມ 🥺</p>
+
+  <div class="button-group">
+    <button class="yes" onclick="forgive()">ຍົກໂທດໃຫ້ກະໄດ້ 💘</button>
+    <button class="no" id="noBtn" onmouseover="moveButton()">ບໍ່ 😤</button>
+  </div>
+
+  <div id="result"></div>
+  <img id="gif" src="https://media.giphy.com/media/l0MYrzcWPJp0RPz1i/giphy.gif" alt="hug gif">
+
+  <div class="message-box">
+    ເຖິງ ນ້ຳຫວານ,<br><br>
+    ກອດໆນ່າ💖
+  </div>
+
+  <div class="reply-area">
+    <p>ນ້ຳຫວານຢາກບອກຫຍັງບໍ່? 💌</p>
+    <textarea placeholder="ບອກຢູ່ນີ້ນ່າ..." oninput="showReply(this.value)"></textarea>
+    <div id="replyText"></div>
+  </div>
+
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/26/audio_5d6fa90963.mp3?filename=soft-piano-ambient-122870.mp3" type="audio/mpeg">
+    เบราว์เซอร์ไม่รองรับเสียง
+  </audio>
+
+  <script>
+    function forgive() {
+      document.getElementById("result").innerHTML = `Wan ยกโทษให้แล้วน้า 💖 หนูดีใจที่สุดเลย`;
+      document.getElementById("gif").style.display = "block";
+      launchHearts();
+    }
+
+    function moveButton() {
+      const btn = document.getElementById("noBtn");
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 100);
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+    }
+
+    function launchHearts() {
+      for (let i = 0; i < 25; i++) {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }
+    }
+
+    function toggleMusic() {
+      const music = document.getElementById('bgMusic');
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+
+    document.body.addEventListener('click', function () {
+      const music = document.getElementById('bgMusic');
+      if (music.paused) {
+        music.play().catch(() => {});
+      }
+    }, { once: true });
+
+    function showReply(text) {
+      document.getElementById("replyText").innerText = text ? `Wan พิมพ์ว่า: "${text}"` : "";
+    }
+  </script>
+</body>
+</html>
